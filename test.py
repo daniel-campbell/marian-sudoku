@@ -1,15 +1,8 @@
 
+   
 
-def is_valid_row(row) :
-    values = [False, False, False, False, False, False, False, False, False]
-    for v in row:
-        if values[v-1]== True :
-            return False
-        values[v-1]=True
-        print(values)
-    return True    
-
-
+###############################################################################
+# main
 row = [5, 2, 5, 7, 8, 9, 3, 4, 6]
 is_valid = is_valid_row(row)
 print("Is valid row = ", is_valid)

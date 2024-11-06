@@ -31,7 +31,11 @@ def load_board(filename) :
     board = [0]*9
     i = 0
     for row in filereader :
-        board[i] = row
+        j = 0
+        for v in row :
+            board[i][j] = int(v)
+            j = j + 1
+        # board[i] = int(row)
         i = i + 1
 
     return board

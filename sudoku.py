@@ -3,10 +3,18 @@ import sudoku_io
 ###############################################################################
 # main
 def main():
+    # First, load a board
     board = sudoku_io.load_board("/home/campbell/board.csv")
     sudoku_io.print_board(board)
     is_valid_board(board)
 
+    # now, solve the board
+
+###############################################################################
+# solve
+# will attempt to solve the given board. Will output the results to the console
+def solve(board) :
+    return
 
 ###############################################################################
 # is_valid_row
@@ -25,6 +33,10 @@ def is_valid_row(row) :
         if values[v-1] == True :
             return False
         
+        # 0 means a blank space. If there is a blank space, the line is invalid
+        if v == 0 :
+            return False
+                
         # Otherwise, if we are here, then it's the first time seeing it, so
         # let's just set it to True. 
         values[v-1]=True

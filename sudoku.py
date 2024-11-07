@@ -4,7 +4,7 @@ import sudoku_io
 # main
 def main():
     # First, load a board
-    board = sudoku_io.load_board("/home/campbell/board.csv")
+    board = sudoku_io.load_board("board.csv")
     sudoku_io.print_board(board)
     is_valid_board(board)
 

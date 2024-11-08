@@ -1,3 +1,4 @@
+from re import I
 import sudoku_io
 
 ###############################################################################
@@ -5,6 +6,8 @@ import sudoku_io
 def main():
     # First, load a board
     board = sudoku_io.load_board("board.csv")
+    if (board == None) :
+        return
     sudoku_io.print_board(board)
     is_valid_board(board)
 

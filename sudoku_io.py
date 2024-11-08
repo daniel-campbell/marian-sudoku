@@ -28,14 +28,17 @@ def load_board(filename) :
     filereader = csv.reader(file_handle)
 
     # iterate through the csv row by row and populate the 9x9 gride
-    board = [0]*9
+    board = [[0] * 9] * 9
     i = 0
     for row in filereader :
         j = 0
         for v in row :
-            board[i][j] = int(v)
+            try:
+                board[i][j] = int(v)
+            except :
+                print('Could not load board - invalid characters detected')
+                return None
             j = j + 1
-        # board[i] = int(row)
         i = i + 1
 
     return board

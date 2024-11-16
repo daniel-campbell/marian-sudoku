@@ -1,17 +1,37 @@
 import sudoku_io
 import time
+import os
 
 ###############################################################################
 # main
 def main():
+    directory = "boards"    
+
+    boards = []
+    times = []
+
+    for filename in os.listdir(directory) :
+        if filename.lower().endswith('.csv') : 
+            file_path = os.path.join(directory, filename)
+            execution_time = solve_csv(file_path)
+            boards.append(filename)
+            times.append(execution_time)
+            
+    for i in range(len(boards)) :
+        print(f"{boards[i]}\t{times[i]}")
+            
+    
+###############################################################################
+# solve_csv
+def solve_csv(filename) :
     # Capture the starting time
-    print("Capturing starting time now")
+    print(f"Capturing starting time now for board '{filename}'")
     start_time = time.time()
 
     # First, load a board
-    board = sudoku_io.load_board("board.csv")
+    board = sudoku_io.load_board(filename)
     if (board == None) :
-        return
+        return -1
     
     # print  the board that we just loaded
     print("Starting board is: ")  
@@ -20,7 +40,6 @@ def main():
 
     # now, solve the board
     if solve(board) :
-        print("-------------------------------------------------------------------------------")
         print("Solution: ")
         sudoku_io.print_board(board)
     else : 
@@ -32,6 +51,9 @@ def main():
     print("End time captured.")
     print(f"Execution time was {execution_time:.6f} seconds")
     print("Thanks for playing!")
+    print("-------------------------------------------------------------------------------")
+    return execution_time
+    
 
 ###############################################################################
 # solve

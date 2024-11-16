@@ -1,23 +1,37 @@
-from re import I
-from sqlite3 import Row
 import sudoku_io
+import time
 
 ###############################################################################
 # main
 def main():
+    # Capture the starting time
+    print("Capturing starting time now")
+    start_time = time.time()
+
     # First, load a board
     board = sudoku_io.load_board("board.csv")
     if (board == None) :
         return
     
-    # print  the board that we just loaded        
+    # print  the board that we just loaded
+    print("Starting board is: ")  
     sudoku_io.print_board(board)
+    print("Solving...")
 
     # now, solve the board
     if solve(board) :
+        print("-------------------------------------------------------------------------------")
+        print("Solution: ")
         sudoku_io.print_board(board)
     else : 
-        print("no solution!")
+        print("No solution!")
+
+    # Now capture the end time of the execution
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print("End time captured.")
+    print(f"Execution time was {execution_time:.6f} seconds")
+    print("Thanks for playing!")
 
 ###############################################################################
 # solve
@@ -32,6 +46,7 @@ def solve(board) :
         
     # Iterate through all the possible sudoku numbers to see if it is valid in this spot of the board. 
     for num in range(1, 10) :
+        # print('Trying row, col, num: ', row, col, num)
         board[row][col]=num
         if is_valid_board (board) :
             if solve(board) :
@@ -41,6 +56,7 @@ def solve(board) :
     
     #Otherwise, we return false        
     return False
+
 
 ###############################################################################
 # is_valid_sudoku_nine
@@ -53,22 +69,17 @@ def is_valid_sudoku_nine(row) :
     
     # Loop through the inputted row
     for v in row:
-        # Look in the "value" array at the index of the number in this iteration
-        # of "row". If that value it set to True, it means that we have already 
-        # encountered it, so it's a repeat. 
-        if values[v-1] == True :
-            return False
-        
-        # 0 means a blank space. If there is a blank space, the line is invalid
-        if v == 0 :
-            return False
+        # if this is a '0' cell, then we will just skip over it and consider it valid
+        if v != 0 :
+            # Look in the "value" array at the index of the number in this iteration
+            # of "row". If that value it set to True, it means that we have already 
+            # encountered it, so it's a repeat. 
+            if values[v-1] == True :
+                return False
                 
-        # Otherwise, if we are here, then it's the first time seeing it, so
-        # let's just set it to True. 
-        values[v-1]=True
-
-        # Print the current list of values to screen, just to debug.
-        # print(values)
+            # Otherwise, if we are here, then it's the first time seeing it, so
+            # let's just set it to True. 
+            values[v-1]=True
 
     # If we got here, it means that we got through the entire row without
     # any repeats, so we know it is a valid row. 
@@ -84,7 +95,7 @@ def is_valid_board(board) :
     # loop through all rows and return False if we find an invalid row.
     for i in range (9):
         if (is_valid_sudoku_nine(board[i])==False):
-            print('Row ' + str(i) + ' is invalid')
+            # print('Row ' + str(i) + ' is invalid')
             return False
         
     # SECOND - check all the columns.
@@ -97,7 +108,7 @@ def is_valid_board(board) :
             column[j] = board[j][i]
         #If that column is not valid, return False. 
         if (is_valid_sudoku_nine(column) == False) : 
-            print('Column ' + str(i) + ' is invalid')
+            # print('Column ' + str(i) + ' is invalid')
             return False
         
     # THIRD - check all the 3x3 grids
@@ -119,7 +130,7 @@ def is_valid_board(board) :
             grid[8] = board[row_iter+2][col_iter+2]
             # If this grid isn't valid, return False.
             if (is_valid_sudoku_nine(grid) == False) :
-                print('Grid[' + str(i) + '][' + str(j) + '] is invalid')
+                # print('Grid[' + str(i) + '][' + str(j) + '] is invalid')
                 return False
                 
     # If we got to this point, then it's a valid board. 

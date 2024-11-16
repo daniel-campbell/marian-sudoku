@@ -10,17 +10,37 @@ def main():
     if (board == None) :
         return
     
+    # print  the board that we just loaded        
     sudoku_io.print_board(board)
-    
-    is_valid_board(board)
 
     # now, solve the board
+    if solve(board) :
+        sudoku_io.print_board(board)
+    else : 
+        print("no solution!")
 
 ###############################################################################
 # solve
 # will attempt to solve the given board. Will output the results to the console
 def solve(board) :
-    return
+    # Find the first empty cell we can find. 
+    row_and_col = find_empty(board) 
+    if not row_and_col : 
+        return True
+    else:
+        row, col = row_and_col
+        
+    # Iterate through all the possible sudoku numbers to see if it is valid in this spot of the board. 
+    for num in range(1, 10) :
+        board[row][col]=num
+        if is_valid_board (board) :
+            if solve(board) :
+                return True
+        board[row][col] = 0
+            
+    
+    #Otherwise, we return false        
+    return False
 
 ###############################################################################
 # is_valid_sudoku_nine
@@ -104,6 +124,16 @@ def is_valid_board(board) :
                 
     # If we got to this point, then it's a valid board. 
     return True
+
+
+################################################################################################################################
+# find_empty will find an empty cell and return the column and row number
+def find_empty(board):
+    for i in range (9) :
+        for j in range (9) :
+            if board [i][j]==0 :
+                return (i,j)
+    return None
 
 
 main()
